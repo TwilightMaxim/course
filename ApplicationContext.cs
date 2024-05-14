@@ -8,5 +8,6 @@ namespace PassengerTransportationAPI
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
         public DbSet<UserDatas> UserData { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<TransportRoutes> TransportRoute { get; set; }
     }
 }
