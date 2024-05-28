@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Mvc;
 using PassengerTransportationAPI.Models;
 
 namespace PassengerTransportationAPI.Controllers
@@ -19,12 +20,12 @@ namespace PassengerTransportationAPI.Controllers
         /// <param name="password"></param>
         /// <returns></returns>
         [HttpPost("Authorization")]
-        public IActionResult Auth(string email, string password)
+        public IActionResult Auth([FromBody] UserDatas request)
         {
-            UserDatas? user = _context.UserData.SingleOrDefault(p => p.Email == email);
+            UserDatas? user = _context.UserData.SingleOrDefault(p => p.Email == request.Email); ;
             if (user != null)
             {
-                if (Verify(password, user.PasswordSalt, user.PasswordHash) == true)
+                if (Verify(request.PasswordHash, user.PasswordSalt, user.PasswordHash) == true)
                 {
                     return Ok();
                 }
