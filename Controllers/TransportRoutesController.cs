@@ -15,14 +15,30 @@ namespace PassengerTransportationAPI.Controllers
             _context = CityMove;
         }
         /// <summary>
-        /// ПОлучение списка маршрутов
+        /// Поиск маршрутов по заданным параметрам
         /// </summary>
         /// <returns></returns>
         [HttpGet("RoutesList")]
-        public async Task<IActionResult> GetRoutes()
+        public async Task<IActionResult> SearchOffers(string departureCity, string arrivalCity, DateOnly date)
         {
-            var routes = await _context.TransportRoute.ToListAsync();
-            return Ok(JsonConvert.SerializeObject(routes));
+            try
+            {
+                // Выполнить поиск предложений по заданным параметрам
+                var offers = await _context.TransportRoute
+                    .Where(r => r.CityDeparture == departureCity && r.CityArrival == arrivalCity && r.Date == date)
+                    .ToListAsync();
+
+                if (offers.Count == 0)
+                {
+                    return NotFound("Предложения не найдены");
+                }
+
+                return Ok(offers);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Внутренняя ошибка сервера: {ex.Message}");
+            }
         }
         /// <summary>
         /// Добавление маршрута
