@@ -25,6 +25,17 @@ namespace PassengerTransportationAPI.Controllers
             return Ok(JsonConvert.SerializeObject(vehicles));
         }
         /// <summary>
+        /// Метод получения информации о трансопрте по ID
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        [HttpGet("VehicleInfoID")]
+        public async Task<IActionResult> GetInfoVehicleID(int ID)
+        {
+            Vehicle? vehicle = _context.Vehicles.SingleOrDefault(p => p.VehicleID == ID);
+            return Ok(JsonConvert.SerializeObject(vehicle));
+        }
+        /// <summary>
         /// Добавление транспорта в базу данных
         /// </summary>
         /// <param name="vehicles"></param>
@@ -58,7 +69,7 @@ namespace PassengerTransportationAPI.Controllers
                 return BadRequest("Invalid data.");
             }
 
-            var existingVehicle = _context.Vehicles.FirstOrDefault(i => i.VehicleId == id);
+            var existingVehicle = _context.Vehicles.FirstOrDefault(i => i.VehicleID == id);
             if (existingVehicle == null)
             {
                 return NotFound();
@@ -79,7 +90,7 @@ namespace PassengerTransportationAPI.Controllers
         [HttpDelete("DeleteVehicle")]
         public async Task<IActionResult> DeleteVehicle(int id)
         {
-            Vehicle? vehicles = _context.Vehicles.FirstOrDefault(p => p.VehicleId == id);
+            Vehicle? vehicles = _context.Vehicles.FirstOrDefault(p => p.VehicleID == id);
             if (vehicles == null)
             {
                 return NotFound();

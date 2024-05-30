@@ -18,7 +18,7 @@ namespace PassengerTransportationAPI.Controllers
         /// Поиск маршрутов по заданным параметрам
         /// </summary>
         /// <returns></returns>
-        [HttpGet("RoutesList")]
+        [HttpGet("RoutesSearch")]
         public async Task<IActionResult> SearchOffers(string departureCity, string arrivalCity, DateOnly date)
         {
             try
@@ -40,6 +40,12 @@ namespace PassengerTransportationAPI.Controllers
                 return StatusCode(500, $"Внутренняя ошибка сервера: {ex.Message}");
             }
         }
+        [HttpGet("RoutesList")]
+        public async Task<IActionResult> ListRoutes()
+        {
+            var route = await _context.TransportRoute.ToListAsync();
+            return Ok(JsonConvert.SerializeObject(route));
+        }
         /// <summary>
         /// Добавление маршрута
         /// </summary>
@@ -51,6 +57,17 @@ namespace PassengerTransportationAPI.Controllers
             _context.TransportRoute.Add(routes);
             await _context.SaveChangesAsync();
             return Ok();
+        }
+        /// <summary>
+        /// Получение информации о маршруте по ID
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpGet("RoutesInfoID")]
+        public async Task<IActionResult> GetInfoRouteID(int Id)
+        {
+            TransportRoutes? route = _context.TransportRoute.SingleOrDefault(p => p.Id == Id);
+            return Ok(JsonConvert.SerializeObject(route));
         }
         /// <summary>
         /// Редактирование информации о маршруте
