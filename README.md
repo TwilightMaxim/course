@@ -10,4 +10,4 @@
 
 Сервер: http://85.193.85.147:5000/swagger/index.html
 
-Сайт: https://hostingcity.me
+Сайт: http://hostingcity.me
